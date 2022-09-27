@@ -23,3 +23,4 @@ def server():
 if __name__ == '__main__':
     "Run the instances in paralell"
     p1 = Process(target=server)
+    #
