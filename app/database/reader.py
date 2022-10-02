@@ -8,7 +8,6 @@ def current_time():
 
     now = datetime.now()
     return now.strftime("%d/%m/%Y %H:%M:%S")
-    
 
 
 def read_CSV(file, mode:bool = None):
@@ -37,6 +36,7 @@ def read_CSV(file, mode:bool = None):
 
         return f.read()
 
+get_location = __file__[]
 file_name = 'logs_authentication.csv'
 login_parameters = read_CSV(file=file_name)
 
