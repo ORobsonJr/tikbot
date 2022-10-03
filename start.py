@@ -19,6 +19,9 @@ class setup():
     def server(self):
         system('cd app/api && uvicorn api:app --reload')
 
+    def youtube(self):
+        None #Under development...
+
 
 if __name__ == '__main__':
     from sys import argv
@@ -43,6 +46,4 @@ if __name__ == '__main__':
          -s or --server:    Run only the api server
 
         """
-
-        
         )

@@ -1,13 +1,14 @@
 from fastapi import FastAPI
 from sys import path
 path.append('../')
-from database.reader import FETCH as AUTH
-from fastapi import HTTPException
+from database.identify import IDENT
+from os.path import dirname, abspath
+from random import choices
+from os import listdir
+
 
 
 app = FastAPI()
-id = AUTH.id #Define id from csv file
-token = AUTH.token #Define token from csv file
 
 
 class server():
@@ -15,41 +16,37 @@ class server():
         pass
 
     @app.get('/getAUTH')
-    def getKeys(): #Use to choose a specific account, if any account be sent, return random 
+    def getKeys(account_code: str): #Use to choose a specific account, if any account be sent, return random 
         """
         Used to get api keys from youtube
         """
 
-        try:
-            return {'STATUS': 200, 'id': id, 'token': token}
-        except:
-            return {'STATUS': 500}
+        return IDENT().return_data(identify_code=account_code)
 
 
     @app.get('/getVideo') #Require a video
-    def getVideo(parameter: str = ''):
+    def getVideo(video_file: str = ''):
         """
         Used to get a video to upload, if no parameter is set, return a random video, otherwise
          return a selected video and return a error
         if these video doesn't exists
         """
-        if not parameter:
-            return 'Random video'
-
-        return 'Some video'
 
 
-    @app.get('/getProfile') #Get the profile fingerprint
-    def getProfile(account: str = ''):
-        if account:
-            return {
-            'canvas': ''
-            }
+        root_location = dirname(abspath("app")) #Get the root path
+        if video_file:
+            file_location = root_location + '/app/database/videos/' + video_file
+            return file_location
 
-        if not account: #Return a random profile
-            return {
-                'canvas': 'random'
-            }
+        else:
+            file_location = root_location + '/../database/videos/'
+            videos = listdir(file_location)
+            return choices(videos) #Return a random video
+            
+
+
+
+
 
 
 if __name__ == '__main__':
