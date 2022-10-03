@@ -1,5 +1,7 @@
 from fastapi import FastAPI
-from . import AUTH
+from sys import path
+path.append('../')
+from database.reader import FETCH as AUTH
 from fastapi import HTTPException
 
 
@@ -35,6 +37,19 @@ class server():
             return 'Random video'
 
         return 'Some video'
+
+
+    @app.get('/getProfile') #Get the profile fingerprint
+    def getProfile(account: str = ''):
+        if account:
+            return {
+            'canvas': ''
+            }
+
+        if not account: #Return a random profile
+            return {
+                'canvas': 'random'
+            }
 
 
 if __name__ == '__main__':

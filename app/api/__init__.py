@@ -1,4 +1,5 @@
 from sys import path
 path.append('../')
-#import vars
+import vars
+import database
 #from database.reader import FETCH as AUTH
