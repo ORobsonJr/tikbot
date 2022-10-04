@@ -42,6 +42,11 @@ class server():
             file_location = root_location + '/../database/videos/'
             videos = listdir(file_location)
             return choices(videos) #Return a random video
+
+    @app.post('/postCookies')
+    def postCookies(cookies: dict):
+        #update cookies
+        return None
             
 
 

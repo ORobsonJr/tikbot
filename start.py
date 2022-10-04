@@ -3,6 +3,7 @@ This file will run the __main__.py file
 """
 from os import system
 from sys import version_info 
+from app.youtube.getAPI import handleAPI
 
 class setup():
     reQfile = 'requirements.txt'
@@ -20,7 +21,7 @@ class setup():
         system('cd app/api && uvicorn api:app --reload')
 
     def youtube(self):
-        None #Under development...
+        handleAPI()
 
 
 if __name__ == '__main__':
@@ -35,6 +36,9 @@ if __name__ == '__main__':
 
         if argv[1] ==('-s' or '--server'):
             SET.server()
+
+        if argv[1] ==('-y' or '--youtube'):
+            SET.youtube()
         
     except IndexError:
         print("""
