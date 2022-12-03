@@ -1,5 +1,7 @@
-selenium
-csv
+selenium>=4.4.1
 fastapi
 uvicorn
-requests
+pyyaml
+undetected_chromedriver
+chromedriver_autoinstaller
+setuptools
