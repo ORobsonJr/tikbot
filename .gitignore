@@ -1,4 +1,8 @@
-app/database/__pycache__/auth.cpython-39.pyc
-app/database/__pycache__/reader.cpython-39.pyc
-app/vars/__pycache__/__init__.cpython-39.pyc
-
+app/vars/webdriver.txt
+**/__pycache__
+.venv
+/app/database/identities/**
+/app/database/videos/**
+build
+dist
+tikbot.egg-info
