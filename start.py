@@ -2,21 +2,10 @@
 Main file, file whose manage everything
 """
 
-from os import system
-from sys import version_info 
 from multiprocessing import Process
-from app.vars.variable import LOCAL
-from app.api import api
+from app.database.crud import DB
 
-
-reQfile = 'requirements.txt'
-
-python_version = version_info[0] #Python version
     
-def install():
-    """Install requirements.txt using the current version of python"""
-    system('pip{py_v} install -r {file}'.format(py_v=python_version, file=reQfile)) #Install the requirements
-    system(f'python{python_version} setup.py install')
 
 def setting():
     """Create a file with location of webriver"""
@@ -27,6 +16,7 @@ def setting():
 
 def server():
     """Run api server"""
+    from app.api import api
     api.__main__()
 
 
@@ -46,6 +36,9 @@ if __name__ == '__main__':
     from sys import argv
     from app.database.identify import IDENT
 
+    D = DB()
+
+
 
     help_str = """
         Usage python3 start.py [option]
@@ -56,31 +49,25 @@ if __name__ == '__main__':
         -i or --install:    Install dependencies and modules required to project, it's
          usually is used to the first use
 
-         -s or --server:    Run only the api server
+         -s or --server:                 Run only the api server
 
          -t or --tiktok [account_id]:    Run exclusively tiktok module
 
-         -c or --configure:    Configure settings
+         -c or --configure:              Configure settings
 
-         -u or --users:    Show all users 
+         -u or --users:                  Show all users 
 
-         run [account code]               Run the entire program
+        -cr or --createUser [username]   Create an user
+
+         run [account code]              Run the entire program
 
 
         """
         
-
-    L = LOCAL()
-
     try:
         arg = argv[1]
 
-        if arg ==('-i' or '--install'):
-            print('Installing...')
-            install()
-        
-
-        elif arg ==('-s' or '--server'):
+        if arg ==('-s' or '--server'):
             print('Running exclusively api server...')
             server()
 
@@ -95,11 +82,10 @@ if __name__ == '__main__':
             setting()
 
         elif arg == ('-u' or '--users'):
-            try:
-                account_argument = argv[2]
-                LOCAL(account_argument).return_users()
-            except IndexError:
-                LOCAL().return_users()
+            DB().returnAllUsers()
+            
+        elif arg == ('-cr' or '--createUser'):
+            print(D.createUser(argv[2]))
 
         elif argv[1] == 'run':
             """Run the entire code, server and tiktok"""
