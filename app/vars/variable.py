@@ -15,6 +15,7 @@ class LOCAL():
     def url(self):
         url = self.raw_content['raw_url'] #Get the raw url, in our case; localhost
         port = self.raw_content['port'] #Get the port that is running
+        #Return api address
         return url + port
 
 
