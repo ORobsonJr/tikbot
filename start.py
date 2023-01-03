@@ -4,7 +4,7 @@ Main file, file whose manage everything
 
 from multiprocessing import Process
 from app.database.crud import DB
-
+from app.exceptions.database import UserAlreadyExists
     
 
 def setting():
@@ -17,18 +17,20 @@ def setting():
 def server():
     """Run api server"""
     from app.api import api
-    api.__main__()
+    #Run api server
+    api.run_api_server()
 
 
 def tiktok(account_id: str, video: str = ''):
     """Upload video"""
-    from app.tiktok.start import TIKTOK as TK
+    from app.tiktok import tiktok as TK
 
     if video:
-        TK().__main__(account_id, video)
+        TK().run_tiktok_feature(account_id, video)
+        #Run tiktok with video argument
     else:
-        TK().__main__(account_id)
-
+        TK().run_tiktok_feature(account_id)
+        #Run tiktok with no video argument
 
             
 
@@ -36,7 +38,7 @@ if __name__ == '__main__':
     from sys import argv
     from app.database.identify import IDENT
 
-    D = DB()
+    database = DB() #Define database variable
 
 
 
@@ -44,10 +46,6 @@ if __name__ == '__main__':
         Usage python3 start.py [option]
         
         -h or --help       Return commands
-
-
-        -i or --install:    Install dependencies and modules required to project, it's
-         usually is used to the first use
 
          -s or --server:                 Run only the api server
 
@@ -82,19 +80,26 @@ if __name__ == '__main__':
             setting()
 
         elif arg == ('-u' or '--users'):
-            DB().returnAllUsers()
+            database.returnAllUsers()
             
         elif arg == ('-cr' or '--createUser'):
-            print(D.createUser(argv[2]))
+            try:
+                print(database.createUser(argv[2]))
+            except UserAlreadyExists:
+                print('[ERROR] The user already exists in database, the attempt to create duplicate user failed')
+
 
         elif argv[1] == 'run':
             """Run the entire code, server and tiktok"""
             print('Running Tikbot software...')
 
-            user_status = IDENT(account_id=argv[2]).checkUser()
+            user_status = database.checkUser(argv[2])
+            #Check if user provided through command line exists, otherwise return a message in "else:"
 
             
             if user_status == True:
+                #The uses exists
+                #Run tiktok module and api module in paralell because both run together
             
                 p2 = Process(target=tiktok, args=(argv[2]))
                 p2.start()
@@ -105,7 +110,7 @@ if __name__ == '__main__':
                 p1.join()
                 p2.join()
             else:
-                print("Please provide a existent user id, to see all users type python3 start.py -u")
+                print("[ERROR] Please provide a existent user id, to see all users type python3 start.py -u")
 
         else:
             print(help_str)

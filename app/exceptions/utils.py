@@ -1,7 +1,14 @@
 from app.exceptions.webdriver import chrome_version_exception, cookie_exception
 
+
+
 def type_error(exception):
-    """Define which type of exception we're dealing"""
+    """
+    These function is important because selenium usually return just a "webdriverexception" but not specify 
+    the exception in question, and for this reason this def was created.
+
+    To identify the specific exception and raise a custom exception.
+    """
     exception = str(exception)
 
     if exception.find('This version of ChromeDriver only supports Chrome version') !=1:#The error indicated

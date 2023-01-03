@@ -77,5 +77,5 @@ class server():
     
 
 
-def __main__():
+def run_api_server():
     run(app, host='localhost', port=8000)
